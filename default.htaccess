@@ -1,0 +1,6 @@
+AddType application/octet-stream .exe
+AddType application/octet-stream .zip
+AddType application/octet-stream .rar
+AddType application/octet-stream .txt
+AddType application/octet-stream .doc
+AddType application/octet-stream .xls
