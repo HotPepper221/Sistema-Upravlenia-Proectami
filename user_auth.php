@@ -1,40 +1,36 @@
-<?php
-    session_start();
-    include("db.php");
-	$con = mysql_connect($server, $db_user, $db_pwd) or die ("Ошибка: ".mysql_error());
-    mysql_select_db($db_name) or die ("Ошибка: ".mysql_error());
-    mysql_query("set names utf8"); 
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Авторизация</title>
+        
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+        <link rel="stylesheet" href="./assets/css/main.css">
+        
+        <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/png">
+    </head>
+    <body>
+        <div class="auth-form">
+            <div class="mdl-grid">
+                <form class="mdl-grid mdl-cell--6-col mdl-shadow--2dp" method="post" action="./assets/php_proccess/user_auth_pr.php">
+                    <h3>Вход</h3>
+                    <div class="mdl-textfield mdl-js-textfield mdl-cell-12-col">
+                        <input class="mdl-textfield__input" type="text" id="username" name="username" required />
+                        <label class="mdl-textfield__label" for="username">Логин</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-cell-12-col">
+                        <input class="mdl-textfield__input" type="password" id="password" name="password" required />
+                        <label class="mdl-textfield__label" for="password">Пароль</label>
+                    </div>
+                    <button type="submit" class="mdl-button mdl-js-button mdl-button--primary">
+                        Войти
+                    </button>
+                </form>
+            </div>
+        </div>
     
-	$username = mysql_real_escape_string(htmlspecialchars($_POST["username"]));
-	$password = mysql_real_escape_string(htmlspecialchars($_POST["password"]));
-
-    if (empty($username) || empty($password)) {
-        echo '<script>document.location.href = "/index.php";</script>';
-        die();
-    }
-	
-	$query = "SELECT * FROM " . $users_table_name . " WHERE username = '$username'";
-	$result = mysql_query($query, $con) or die('Ошибка');
-    if (mysql_num_rows($result)) {
-		$query = "SELECT password FROM " . $users_table_name . " WHERE username = '$username'";
-	    $result = mysql_query($query, $con) or die('Ошибка');
-		$db_field = mysql_fetch_assoc($result);
-		$hashed_password = crypt($password, $db_field['password']);
-		
- 		$query = "SELECT * FROM " . $users_table_name . " WHERE username = '$username' AND password = '$hashed_password'";
-		$result = mysql_query($query, $con) or die('Ошибка');
-		if (mysql_num_rows($result)) {
-            $query = "UPDATE " . $users_table_name . " SET last_login_date=CURRENT_TIMESTAMP WHERE username='$username'";
-		    $result = mysql_query($query, $con) or die('Ошибка');
-		    $_SESSION['username'] = $username;
-		    echo '<script>document.location.href = "/index.php";</script>';
-		}
-        else {
-            echo '<br><br><center><h2>Неверный логин и/или пароль</h2></center><script>setTimeout(function(){document.location.href = "/index.php"}, 1500);</script>';
-	    }
-    }	
-	else {
-	   echo '<br><br><center><h2>Неверный логин и/или пароль</h2></center><script>setTimeout(function(){document.location.href = "/index.php"}, 1500);</script>';
-	   die();
-	}
-?>
+        <!-- SCRIPTS -->
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+    </body>
+</html>
